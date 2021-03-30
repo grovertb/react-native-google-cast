@@ -21,12 +21,12 @@ public class GoogleCastPackage implements ReactPackage {
   public List<NativeModule>
   createNativeModules(ReactApplicationContext reactContext) {
     List<NativeModule> modules = new ArrayList<>();
-
-    modules.add(new RNGCCastContext(reactContext));
-    modules.add(new RNGCCastSession(reactContext));
-    modules.add(new RNGCRemoteMediaClient(reactContext));
-    modules.add(new RNGCSessionManager(reactContext));
-
+    if (!RNGCCastContext.isTV(reactContext)) {
+      modules.add(new RNGCCastContext(reactContext));
+      modules.add(new RNGCCastSession(reactContext));
+      modules.add(new RNGCRemoteMediaClient(reactContext));
+      modules.add(new RNGCSessionManager(reactContext));
+    }
     return modules;
   }
 

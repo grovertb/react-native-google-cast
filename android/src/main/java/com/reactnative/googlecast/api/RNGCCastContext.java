@@ -1,6 +1,9 @@
 package com.reactnative.googlecast.api;
 
+import android.app.UiModeManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -45,6 +48,25 @@ public class RNGCCastContext
     super(reactContext);
 
     reactContext.addLifecycleEventListener(this);
+  }
+
+  public static CastContext getSharedInstance(@NonNull Context context) {
+    if (!RNGCCastContext.isTV(context)) {
+      return CastContext.getSharedInstance(context);
+    }
+
+    return null;
+  }
+
+  public static boolean isTV(@NonNull Context context) {
+    UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+
+    try {
+      return uiModeManager.getCurrentModeType() == Configuration.UI_MODE_TYPE_TELEVISION;
+
+    } catch (NullPointerException exception) {
+      return false;
+    }
   }
 
   @Override
